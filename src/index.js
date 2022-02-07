@@ -10,8 +10,7 @@ import {
   validateTodoInput,
 } from "./todoInput";
 
-const todoInputWrapper = document.querySelector(".todo-input-wrapper");
-const { todoInput, todoButton } = getTodoInputItems(todoInputWrapper);
+const { todoInput, todoButton } = getTodoInputItems();
 const todoList = document.querySelector(".todo-list");
 const todoSelect = document.querySelector(".todo-select");
 
@@ -22,7 +21,7 @@ todoSelect.addEventListener("change", filterTodos);
 
 function onDOMLoaded() {
   renderTodosFromSStorage();
-  validateTodoInput(todoInputWrapper);
+  validateTodoInput();
 }
 
 function renderTodosFromSStorage() {
@@ -44,7 +43,7 @@ function addTodo(event) {
   const todoItem = getTodoItem(todoInput.value);
   todoList.appendChild(todoItem);
 
-  clearTodoInput(todoInputWrapper);
+  clearTodoInput();
 }
 
 function filterTodos(e) {

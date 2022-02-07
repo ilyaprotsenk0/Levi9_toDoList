@@ -46,33 +46,12 @@ export const getTodoItem = (text) => {
 function removeTodoItem(todoItem) {
   return (e) => {
     e.preventDefault();
-
     todoItem.classList.add("todo-item_fall");
-
-    let ctr = 0;
-    console.log(`Before recursion: ${ctr}`);
-    function recursion(element) {
-      if (element.previousElementSibling) {
-        console.log(element.previousElementSibling);
-        ctr++;
-        recursion(element.previousElementSibling);
-      }
-    }
-
-    recursion(todoItem);
-
-    console.log(`After recursion: ${ctr}`);
     todoItem.addEventListener("transitionend", function () {
-      removeTodoFromSStorage(todoItem[ctr]);
+      removeTodoFromSStorage(todoItem);
       todoItem.remove();
-      // toggleSelectActivation();
+      toggleSelectActivation();
     });
-
-    // Если остается один элемент, можно сразу же заблокировать кнопку, передав тру в функцию
-
-    // todoItem.addEventListener("transitionstart", () => {
-    //   toggleSelectActivation(true);
-    // });
   };
 }
 
@@ -81,4 +60,11 @@ function toggleCheckButton(todoItem) {
     e.preventDefault();
     todoItem.classList.toggle("todo-item_completed");
   };
+}
+
+export function toggleSelectActivation() {
+  const select = document.querySelector(".todo-select");
+  const todoItems = document.querySelector(".todo-list").children;
+
+  todoItems.length ? (select.disabled = false) : (select.disabled = true);
 }
