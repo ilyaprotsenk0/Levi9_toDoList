@@ -4,6 +4,7 @@ import "../index.html";
 import { getTodoItem } from "./addTodoItem";
 import { saveTodoToSStorage, getTodosFromSStorage } from "./sessionStorage";
 import { filterTodoItems } from "./filterTodoItems";
+import { toggleSelectActivation } from "./addTodoItem";
 import {
   clearTodoInput,
   getTodoInputItems,
@@ -16,12 +17,23 @@ const todoSelect = document.querySelector(".todo-select");
 
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
 todoInput.addEventListener("input", validateTodoInput);
+todoInput.addEventListener("keydown", (event) => {
+  if (event.keyCode == 13) {
+    if (validateTodoInput()) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+});
 todoButton.addEventListener("click", addTodo);
 todoSelect.addEventListener("change", filterTodos);
 
 function onDOMLoaded() {
   renderTodosFromSStorage();
   validateTodoInput();
+  toggleSelectActivation();
 }
 
 function renderTodosFromSStorage() {
