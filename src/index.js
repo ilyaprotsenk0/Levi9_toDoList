@@ -14,6 +14,7 @@ import {
 const { todoInput, todoButton } = getTodoInputItems();
 const todoList = document.querySelector(".todo-list");
 const todoSelect = document.querySelector(".todo-select");
+const todoHelper = document.querySelector(".todo-helper");
 
 document.addEventListener("DOMContentLoaded", onDOMLoaded);
 todoInput.addEventListener("input", validateTodoInput);
@@ -27,12 +28,17 @@ todoInput.addEventListener("keydown", (event) => {
     }
   }
 });
+todoInput.addEventListener("focus", () => {
+  todoHelper.classList.add("todo-helper_visible");
+});
+todoInput.addEventListener("blur", () => {
+  todoHelper.classList.remove("todo-helper_visible");
+});
 todoButton.addEventListener("click", addTodo);
 todoSelect.addEventListener("change", filterTodos);
 
 function onDOMLoaded() {
   renderTodosFromSStorage();
-  validateTodoInput();
   toggleSelectActivation();
 }
 
@@ -51,6 +57,10 @@ function addTodo(event) {
   event.preventDefault();
 
   saveTodoToSStorage(todoInput.value);
+  // saveTodoToSStorage({
+  //   value: todoInput.value,
+  //   checked: false
+  // });
 
   const todoItem = getTodoItem(todoInput.value);
   todoList.appendChild(todoItem);
