@@ -1,4 +1,6 @@
 import { removeTodoFromSStorage } from "./sessionStorage";
+// import { saveTodoToSStorage } from ".sessionStorage";
+// import { toggleSelectActivation } from "./index";
 
 export const getTodoItem = (text) => {
   // Create Todo Item
@@ -16,6 +18,19 @@ export const getTodoItem = (text) => {
   checkButton.innerHTML = '<i class="fas fa-check"></i>';
   checkButton.classList.add("todo-check-button");
   checkButton.addEventListener("click", toggleCheckButton(todoItem));
+  // checkButton.addEventListener("click", () => {
+  //   if (checkButton.classList.contains("todo-item_completed")) {
+  //     saveTodoToSStorage({
+  //       item: todoItem,
+  //       checked: false
+  //     });
+  //   } else {
+  //     saveTodoToSStorage({
+  //       item: todoItem,
+  //       checked: false
+  //     });
+  //   }
+  // });
   todoItem.appendChild(checkButton);
 
   // Create and add Remove button
@@ -31,11 +46,33 @@ export const getTodoItem = (text) => {
 function removeTodoItem(todoItem) {
   return (e) => {
     e.preventDefault();
+
     todoItem.classList.add("todo-item_fall");
+
+    let ctr = 0;
+    console.log(`Before recursion: ${ctr}`);
+    function recursion(element) {
+      if (element.previousElementSibling) {
+        console.log(element.previousElementSibling);
+        ctr++;
+        recursion(element.previousElementSibling);
+      }
+    }
+
+    recursion(todoItem);
+
+    console.log(`After recursion: ${ctr}`);
     todoItem.addEventListener("transitionend", function () {
-      removeTodoFromSStorage(todoItem);
+      removeTodoFromSStorage(todoItem[ctr]);
       todoItem.remove();
+      // toggleSelectActivation();
     });
+
+    // Если остается один элемент, можно сразу же заблокировать кнопку, передав тру в функцию
+
+    // todoItem.addEventListener("transitionstart", () => {
+    //   toggleSelectActivation(true);
+    // });
   };
 }
 
