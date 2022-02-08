@@ -45,8 +45,8 @@ function onDOMLoaded() {
 function renderTodosFromSStorage() {
   let todos = getTodosFromSStorage();
 
-  todos.forEach((todoValue) => {
-    const todoItem = getTodoItem(todoValue);
+  todos.forEach((todo) => {
+    const todoItem = getTodoItem(todo.value);
 
     // Add todo item to list
     todoList.appendChild(todoItem);
@@ -56,14 +56,15 @@ function renderTodosFromSStorage() {
 function addTodo(event) {
   event.preventDefault();
 
-  saveTodoToSStorage(todoInput.value);
-  // saveTodoToSStorage({
-  //   value: todoInput.value,
-  //   checked: false
-  // });
-
   const todoItem = getTodoItem(todoInput.value);
   todoList.appendChild(todoItem);
+
+  toggleSelectActivation();
+
+  saveTodoToSStorage({
+    value: todoInput.value,
+    checked: false,
+  });
 
   clearTodoInput();
 }

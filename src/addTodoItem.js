@@ -1,5 +1,5 @@
 import { removeTodoFromSStorage } from "./sessionStorage";
-// import { saveTodoToSStorage } from ".sessionStorage";
+import { changeTodoItemActiveProperty } from "./sessionStorage";
 // import { toggleSelectActivation } from "./index";
 
 export const getTodoItem = (text) => {
@@ -18,19 +18,7 @@ export const getTodoItem = (text) => {
   checkButton.innerHTML = '<i class="fas fa-check"></i>';
   checkButton.classList.add("todo-check-button");
   checkButton.addEventListener("click", toggleCheckButton(todoItem));
-  // checkButton.addEventListener("click", () => {
-  //   if (checkButton.classList.contains("todo-item_completed")) {
-  //     saveTodoToSStorage({
-  //       item: todoItem,
-  //       checked: false
-  //     });
-  //   } else {
-  //     saveTodoToSStorage({
-  //       item: todoItem,
-  //       checked: false
-  //     });
-  //   }
-  // });
+
   todoItem.appendChild(checkButton);
 
   // Create and add Remove button
@@ -59,6 +47,7 @@ function toggleCheckButton(todoItem) {
   return (e) => {
     e.preventDefault();
     todoItem.classList.toggle("todo-item_completed");
+    changeTodoItemActiveProperty(findElementIndex(todoItem));
   };
 }
 
@@ -67,4 +56,21 @@ export function toggleSelectActivation() {
   const todoItems = document.querySelector(".todo-list").children;
 
   todoItems.length ? (select.disabled = false) : (select.disabled = true);
+}
+
+function findElementIndex(element) {
+  let indexCtr = 0;
+  let todoItem = element;
+
+  function findAllPreviousElements(todoItem) {
+    if (todoItem.previousElementSibling) {
+      console.log(todoItem.previousElementSibling);
+      indexCtr++;
+      findAllPreviousElements(todoItem.previousElementSibling);
+    }
+  }
+
+  findAllPreviousElements(todoItem);
+
+  return indexCtr;
 }
