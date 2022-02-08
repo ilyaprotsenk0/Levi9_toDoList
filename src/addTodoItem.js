@@ -1,6 +1,5 @@
 import { removeTodoFromSStorage } from "./sessionStorage";
-import { changeTodoItemActiveProperty } from "./sessionStorage";
-// import { toggleSelectActivation } from "./index";
+import { toggleTodoCompleteStatusInSS } from "./sessionStorage";
 
 export const getTodoItem = (text) => {
   // Create Todo Item
@@ -47,7 +46,10 @@ function toggleCheckButton(todoItem) {
   return (e) => {
     e.preventDefault();
     todoItem.classList.toggle("todo-item_completed");
-    changeTodoItemActiveProperty(findElementIndex(todoItem));
+    toggleTodoCompleteStatusInSS(
+      findElementIndex(todoItem).index,
+      findElementIndex(todoItem).element
+    );
   };
 }
 
@@ -55,22 +57,30 @@ export function toggleSelectActivation() {
   const select = document.querySelector(".todo-select");
   const todoItems = document.querySelector(".todo-list").children;
 
-  todoItems.length ? (select.disabled = false) : (select.disabled = true);
+  if (todoItems.length) {
+    select.disabled = false;
+  } else {
+    select.disabled = true;
+    select.selectedIndex = 0;
+  }
 }
 
 function findElementIndex(element) {
-  let indexCtr = 0;
+  let positionInList = 0;
   let todoItem = element;
 
   function findAllPreviousElements(todoItem) {
     if (todoItem.previousElementSibling) {
       console.log(todoItem.previousElementSibling);
-      indexCtr++;
+      positionInList++;
       findAllPreviousElements(todoItem.previousElementSibling);
     }
   }
 
   findAllPreviousElements(todoItem);
 
-  return indexCtr;
+  return {
+    index: positionInList,
+    element: todoItem,
+  };
 }

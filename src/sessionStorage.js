@@ -27,15 +27,14 @@ export function getTodosFromSStorage() {
   return storageTodos ? JSON.parse(storageTodos) : [];
 }
 
-export function changeTodoItemActiveProperty(toDoItemIndex) {
+export function toggleTodoCompleteStatusInSS(todoIndex, todoElement) {
   const savedTodos = getTodosFromSStorage();
-  savedTodos.forEach((savedTodo, i) => {
-    if (i === toDoItemIndex) {
-      savedTodo.checked = true;
-    }
-  });
+
+  if (todoElement.classList.contains("todo-item_completed")) {
+    savedTodos[todoIndex].checked = true;
+  } else {
+    savedTodos[todoIndex].checked = false;
+  }
+
   sessionStorage.setItem(TODOS, JSON.stringify(savedTodos));
 }
-
-// 1. Продумать как изменять значение в SS на true/false
-// 2. Продумать как отрисовывать при загрузке страницы с учетом значения checked

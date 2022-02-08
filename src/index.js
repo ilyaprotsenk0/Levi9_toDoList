@@ -29,7 +29,9 @@ todoInput.addEventListener("keydown", (event) => {
   }
 });
 todoInput.addEventListener("focus", () => {
-  todoHelper.classList.add("todo-helper_visible");
+  if (!validateTodoInput()) {
+    todoHelper.classList.add("todo-helper_visible");
+  }
 });
 todoInput.addEventListener("blur", () => {
   todoHelper.classList.remove("todo-helper_visible");
@@ -47,9 +49,11 @@ function renderTodosFromSStorage() {
 
   todos.forEach((todo) => {
     const todoItem = getTodoItem(todo.value);
-
-    // Add todo item to list
     todoList.appendChild(todoItem);
+
+    if (todo.checked) {
+      todoItem.classList.add("todo-item_completed");
+    }
   });
 }
 
